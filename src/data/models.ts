@@ -1,0 +1,133 @@
+export type ModelProvider = "OpenAI" | "Anthropic" | "Google" | "xAI" | "GitHub"
+export type ModelCategory = "Lightweight" | "Versatile" | "Powerful"
+
+export interface ModelPricing {
+  id: string
+  name: string
+  provider: ModelProvider
+  category: ModelCategory
+  /** Cost per 1M input tokens (USD) */
+  inputPer1M: number
+  /** Cost per 1M cached input tokens (USD) */
+  cachedPer1M: number
+  /** Cost per 1M cache-write tokens (USD). Anthropic only; null for others. */
+  cacheWritePer1M: number | null
+  /** Cost per 1M output tokens (USD) */
+  outputPer1M: number
+}
+
+/**
+ * Model pricing data sourced from the GitHub Copilot public documentation.
+ * See: https://docs.github.com/en/copilot/about-github-copilot/github-copilot-plans-and-pricing
+ * Prices are per 1M tokens in USD.
+ */
+export const MODEL_PRICING: ModelPricing[] = [
+  // OpenAI
+  { id: "gpt-4.1", name: "GPT-4.1", provider: "OpenAI", category: "Versatile", inputPer1M: 2.00, cachedPer1M: 0.50, cacheWritePer1M: null, outputPer1M: 8.00 },
+  { id: "gpt-5-mini", name: "GPT-5 mini", provider: "OpenAI", category: "Lightweight", inputPer1M: 0.25, cachedPer1M: 0.025, cacheWritePer1M: null, outputPer1M: 2.00 },
+  { id: "gpt-5.2", name: "GPT-5.2", provider: "OpenAI", category: "Versatile", inputPer1M: 1.75, cachedPer1M: 0.175, cacheWritePer1M: null, outputPer1M: 14.00 },
+  { id: "gpt-5.2-codex", name: "GPT-5.2-Codex", provider: "OpenAI", category: "Powerful", inputPer1M: 1.75, cachedPer1M: 0.175, cacheWritePer1M: null, outputPer1M: 14.00 },
+  { id: "gpt-5.3-codex", name: "GPT-5.3-Codex", provider: "OpenAI", category: "Powerful", inputPer1M: 1.75, cachedPer1M: 0.175, cacheWritePer1M: null, outputPer1M: 14.00 },
+  { id: "gpt-5.4", name: "GPT-5.4", provider: "OpenAI", category: "Versatile", inputPer1M: 2.50, cachedPer1M: 0.25, cacheWritePer1M: null, outputPer1M: 15.00 },
+  { id: "gpt-5.4-mini", name: "GPT-5.4 mini", provider: "OpenAI", category: "Lightweight", inputPer1M: 0.75, cachedPer1M: 0.075, cacheWritePer1M: null, outputPer1M: 4.50 },
+  { id: "gpt-5.4-nano", name: "GPT-5.4 nano", provider: "OpenAI", category: "Lightweight", inputPer1M: 0.20, cachedPer1M: 0.02, cacheWritePer1M: null, outputPer1M: 1.25 },
+  { id: "gpt-5.5", name: "GPT-5.5", provider: "OpenAI", category: "Powerful", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: null, outputPer1M: 30.00 },
+
+  // Anthropic
+  { id: "claude-haiku-4.5", name: "Claude Haiku 4.5", provider: "Anthropic", category: "Versatile", inputPer1M: 1.00, cachedPer1M: 0.10, cacheWritePer1M: 1.25, outputPer1M: 5.00 },
+  { id: "claude-sonnet-4", name: "Claude Sonnet 4", provider: "Anthropic", category: "Versatile", inputPer1M: 3.00, cachedPer1M: 0.30, cacheWritePer1M: 3.75, outputPer1M: 15.00 },
+  { id: "claude-sonnet-4.5", name: "Claude Sonnet 4.5", provider: "Anthropic", category: "Versatile", inputPer1M: 3.00, cachedPer1M: 0.30, cacheWritePer1M: 3.75, outputPer1M: 15.00 },
+  { id: "claude-sonnet-4.6", name: "Claude Sonnet 4.6", provider: "Anthropic", category: "Versatile", inputPer1M: 3.00, cachedPer1M: 0.30, cacheWritePer1M: 3.75, outputPer1M: 15.00 },
+  { id: "claude-opus-4.5", name: "Claude Opus 4.5", provider: "Anthropic", category: "Powerful", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: 6.25, outputPer1M: 25.00 },
+  { id: "claude-opus-4.6", name: "Claude Opus 4.6", provider: "Anthropic", category: "Powerful", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: 6.25, outputPer1M: 25.00 },
+  { id: "claude-opus-4.7", name: "Claude Opus 4.7", provider: "Anthropic", category: "Powerful", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: 6.25, outputPer1M: 25.00 },
+
+  // Google
+  { id: "gemini-2.5-pro", name: "Gemini 2.5 Pro", provider: "Google", category: "Powerful", inputPer1M: 1.25, cachedPer1M: 0.125, cacheWritePer1M: null, outputPer1M: 10.00 },
+  { id: "gemini-3-flash", name: "Gemini 3 Flash", provider: "Google", category: "Lightweight", inputPer1M: 0.50, cachedPer1M: 0.05, cacheWritePer1M: null, outputPer1M: 3.00 },
+  { id: "gemini-3.1-pro", name: "Gemini 3.1 Pro", provider: "Google", category: "Powerful", inputPer1M: 2.00, cachedPer1M: 0.20, cacheWritePer1M: null, outputPer1M: 12.00 },
+
+  // xAI
+  { id: "grok-code-fast-1", name: "Grok Code Fast 1", provider: "xAI", category: "Lightweight", inputPer1M: 0.20, cachedPer1M: 0.02, cacheWritePer1M: null, outputPer1M: 1.50 },
+]
+
+export const CATEGORY_COLORS: Record<ModelCategory, string> = {
+  Lightweight: "text-category-lightweight bg-category-lightweight/10 border-category-lightweight/30",
+  Versatile: "text-category-versatile bg-category-versatile/10 border-category-versatile/30",
+  Powerful: "text-category-powerful bg-category-powerful/10 border-category-powerful/30",
+}
+
+export interface TokenRatioPreset {
+  id: string
+  label: string
+  description: string
+  input: number
+  cached: number
+  output: number
+}
+
+export const TOKEN_RATIO_PRESETS: TokenRatioPreset[] = [
+  { id: "chat", label: "Chat", description: "High input, low cached, medium output", input: 60, cached: 10, output: 30 },
+  { id: "agent", label: "Agent coding", description: "High input, high cached, high output", input: 40, cached: 30, output: 30 },
+  { id: "review", label: "Code review", description: "High input, medium cached, low output", input: 70, cached: 15, output: 15 },
+]
+
+/** Models where the user cannot choose the model — system-selected. */
+const SYSTEM_SELECTED_PATTERNS = [
+  "Code Review model",
+  "Coding Agent model",
+]
+
+/** Check if a model name from the CSV is system-selected (not optimizable). */
+export function isSystemSelected(csvModelName: string): boolean {
+  if (csvModelName.startsWith("Auto:")) return true
+  return SYSTEM_SELECTED_PATTERNS.some(p => csvModelName.includes(p))
+}
+
+/**
+ * Map a CSV model name to our pricing model ID.
+ * Strips "Auto:" prefix and normalizes casing/spacing.
+ * Returns null if no match found (e.g., "Code Review model").
+ */
+export function mapCsvModelToId(csvModelName: string): string | null {
+  let name = csvModelName.trim()
+  if (name.startsWith("Auto:")) name = name.slice(5).trim()
+
+  const normalizedLower = name.toLowerCase()
+
+  for (const model of MODEL_PRICING) {
+    if (model.name.toLowerCase() === normalizedLower) return model.id
+  }
+
+  // Fuzzy matches for known CSV variants
+  const fuzzyMap: Record<string, string> = {
+    "claude opus 4.6": "claude-opus-4.6",
+    "claude opus 4.7": "claude-opus-4.7",
+    "claude opus 4.5": "claude-opus-4.5",
+    "claude sonnet 4.6": "claude-sonnet-4.6",
+    "claude sonnet 4.5": "claude-sonnet-4.5",
+    "claude sonnet 4": "claude-sonnet-4",
+    "claude haiku 4.5": "claude-haiku-4.5",
+    "gemini 2.5 pro": "gemini-2.5-pro",
+    "gemini 3 flash": "gemini-3-flash",
+    "gemini 3 flash (preview)": "gemini-3-flash",
+    "gemini 3.1 pro": "gemini-3.1-pro",
+    "grok code fast 1": "grok-code-fast-1",
+  }
+
+  return fuzzyMap[normalizedLower] ?? null
+}
+
+/**
+ * Sort models for dropdown display:
+ * - Grouped by provider (alphabetical)
+ * - Within each provider: latest/highest version first (name descending)
+ */
+export function sortModelsForDropdown(models: ModelPricing[]): ModelPricing[] {
+  return [...models].sort((a, b) => {
+    const providerCmp = a.provider.localeCompare(b.provider)
+    if (providerCmp !== 0) return providerCmp
+    // Reverse alphabetical within provider puts higher version numbers first
+    return b.name.localeCompare(a.name, undefined, { numeric: true })
+  })
+}
