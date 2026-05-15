@@ -30,6 +30,48 @@ export interface ParsedUsageData {
   userChosenModels: ModelUsage[]
   /** System-selected models (Auto:, Code Review, Coding Agent). */
   systemSelectedModels: ModelUsage[]
+  /** Rows dropped by April 2026 backfill normalization. */
+  normalizedRowsDropped: number
+  /** Rows with AIC values halved by April 2026 backfill normalization. */
+  normalizedRowsModified: number
+}
+
+// April 2026 GitHub billing CSV exports for 2026-04-24 through 2026-04-30
+// (inclusive) contain duplicated rows. GitHub decided not to fix the export
+// server-side, so every ingestion client must normalize.
+// Mirrors github/copilot-billing-preview commit 5d0b6eef75e5976d7b108328b95367c1a268e8c1
+// (src/pipeline/parser.ts → normalizeTokenUsageRecord).
+const BACKFILL_START = "2026-04-24"
+const BACKFILL_END = "2026-04-30"
+
+interface NormalizationDecision {
+  action: "keep" | "drop" | "halve"
+}
+
+/**
+ * Decide how to handle a raw CSV row given the April 2026 backfill rules.
+ * - Outside window → keep unchanged
+ * - In window AND quantity === 0 AND total_monthly_quota !== 0 → drop (invalid duplicate)
+ * - In window AND total_monthly_quota === 0 AND unit_type === "requests" → halve AIC values
+ * - Otherwise → keep unchanged
+ */
+function decideNormalization(
+  date: string,
+  quantity: number,
+  unitType: string,
+  totalMonthlyQuota: number,
+): NormalizationDecision {
+  const dateKey = date.slice(0, 10)
+  if (dateKey < BACKFILL_START || dateKey > BACKFILL_END) {
+    return { action: "keep" }
+  }
+  if (quantity === 0 && totalMonthlyQuota !== 0) {
+    return { action: "drop" }
+  }
+  if (totalMonthlyQuota === 0 && unitType === "requests") {
+    return { action: "halve" }
+  }
+  return { action: "keep" }
 }
 
 /**
@@ -52,18 +94,42 @@ export function parseCsv(csvText: string): ParsedUsageData {
   const usernameIdx = findColumn(headers, "username")
   const aicQtyIdx = findColumn(headers, "aic_quantity")
   const aicGrossIdx = findColumn(headers, "aic_gross_amount")
+  const quantityIdx = findColumn(headers, "quantity")
+  const unitTypeIdx = findColumn(headers, "unit_type")
+  const quotaIdx = findColumn(headers, "total_monthly_quota")
+
+  let normalizedRowsDropped = 0
+  let normalizedRowsModified = 0
 
   const rows: CsvRow[] = []
   for (let i = 1; i < lines.length; i++) {
     const cols = parseCsvLine(lines[i])
-    if (cols.length <= Math.max(modelIdx, dateIdx, usernameIdx, aicQtyIdx, aicGrossIdx)) continue
+    if (cols.length <= Math.max(modelIdx, dateIdx, usernameIdx, aicQtyIdx, aicGrossIdx, quantityIdx, unitTypeIdx, quotaIdx)) continue
+
+    const date = unquote(cols[dateIdx])
+    const quantity = parseFloat(unquote(cols[quantityIdx])) || 0
+    const unitType = unquote(cols[unitTypeIdx])
+    const quota = parseFloat(unquote(cols[quotaIdx])) || 0
+    let aicQuantity = parseFloat(unquote(cols[aicQtyIdx])) || 0
+    let aicGrossAmount = parseFloat(unquote(cols[aicGrossIdx])) || 0
+
+    const decision = decideNormalization(date, quantity, unitType, quota)
+    if (decision.action === "drop") {
+      normalizedRowsDropped++
+      continue
+    }
+    if (decision.action === "halve") {
+      aicQuantity = aicQuantity / 2
+      aicGrossAmount = aicGrossAmount / 2
+      normalizedRowsModified++
+    }
 
     rows.push({
-      date: unquote(cols[dateIdx]),
+      date,
       username: unquote(cols[usernameIdx]),
       model: unquote(cols[modelIdx]),
-      aicQuantity: parseFloat(unquote(cols[aicQtyIdx])) || 0,
-      aicGrossAmount: parseFloat(unquote(cols[aicGrossIdx])) || 0,
+      aicQuantity,
+      aicGrossAmount,
     })
   }
 
@@ -122,6 +188,8 @@ export function parseCsv(csvText: string): ParsedUsageData {
     modelUsage,
     userChosenModels: modelUsage.filter(m => !m.isSystemSelected),
     systemSelectedModels: modelUsage.filter(m => m.isSystemSelected),
+    normalizedRowsDropped,
+    normalizedRowsModified,
   }
 }
 
