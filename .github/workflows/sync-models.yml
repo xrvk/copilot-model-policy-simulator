@@ -1,0 +1,41 @@
+name: Sync model pricing
+
+on:
+  schedule:
+    # Daily at 13:00 UTC
+    - cron: "0 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Run sync script
+        run: npm run sync:models
+      - name: Open or update PR with changes
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/sync-model-pricing
+          commit-message: "chore: sync model pricing from github/docs"
+          title: "chore: sync model pricing from github/docs"
+          body: |
+            Automated sync of `src/data/models.ts` from
+            [`github/docs/data/tables/copilot/models-and-pricing.yml`](https://github.com/github/docs/blob/main/data/tables/copilot/models-and-pricing.yml).
+
+            Review the diff for any new providers, categories, or models, and
+            extend the `ModelProvider` / `ModelCategory` unions in
+            `src/data/models.ts` if needed before merging.
+          labels: |
+            dependencies
+            automated
+          delete-branch: true

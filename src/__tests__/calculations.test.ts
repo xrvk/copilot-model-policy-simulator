@@ -49,7 +49,7 @@ describe("findCheapestCostPer1M", () => {
   it("returns the lowest weighted cost across all models", () => {
     const cheapest = findCheapestCostPer1M(MODEL_PRICING, CHAT_RATIO)
     expect(cheapest).toBeGreaterThan(0)
-    // GPT-5.4 nano or Grok should be cheapest
+    // GPT-5.4 nano should be the cheapest (or tied with it)
     const nanoCost = calcWeightedCostPer1M(gpt54nano, CHAT_RATIO)
     expect(cheapest).toBeLessThanOrEqual(nanoCost)
   })
