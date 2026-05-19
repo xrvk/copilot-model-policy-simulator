@@ -1,0 +1,34 @@
+name: Models drift check
+
+on:
+  pull_request:
+    paths:
+      - "src/data/models.ts"
+      - "scripts/sync-models.ts"
+      - ".github/workflows/models-drift-check.yml"
+      - ".github/workflows/sync-models.yml"
+      - "package.json"
+      - "package-lock.json"
+  push:
+    branches: [main]
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Run sync script
+        run: npm run sync:models
+      - name: Fail if src/data/models.ts is out of sync with upstream
+        run: |
+          if ! git diff --exit-code -- src/data/models.ts; then
+            echo ""
+            echo "::error::src/data/models.ts is out of sync with the upstream pricing YAML."
+            echo "Run 'npm run sync:models' locally and commit the result, or wait for the scheduled sync PR."
+            exit 1
+          fi

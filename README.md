@@ -93,3 +93,17 @@ npm run build      # production build
 
 - **[GitHub Copilot Docs](https://docs.github.com/en/copilot)** — Official GitHub Copilot documentation
 
+---
+
+## 🔄 Model pricing sync
+
+Model pricing in `src/data/models.ts` is auto-synced from
+[`github/docs/data/tables/copilot/models-and-pricing.yml`](https://github.com/github/docs/blob/main/data/tables/copilot/models-and-pricing.yml),
+the structured source for the public Copilot pricing page.
+
+- **`.github/workflows/sync-models.yml`** runs daily and opens a PR when upstream has changed.
+- **`.github/workflows/models-drift-check.yml`** runs on every PR and fails if `src/data/models.ts` is out of sync (or hand-edited inside the `BEGIN/END GENERATED MODEL_PRICING` markers).
+- Run locally with `npm run sync:models`.
+
+Only `openai`, `anthropic`, `google`, and `xai` providers are synced. Fine-tuned `github` models are skipped.
+
