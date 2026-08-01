@@ -28,15 +28,20 @@ export interface ModelPricing {
  */
 export const MODEL_PRICING: ModelPricing[] = [
   // BEGIN GENERATED MODEL_PRICING
-  { id: "gpt-4.1", name: "GPT-4.1", provider: "OpenAI", category: "Versatile", inputPer1M: 2.00, cachedPer1M: 0.50, cacheWritePer1M: null, outputPer1M: 8.00 },
   { id: "gpt-5-mini", name: "GPT-5 mini", provider: "OpenAI", category: "Lightweight", inputPer1M: 0.25, cachedPer1M: 0.025, cacheWritePer1M: null, outputPer1M: 2.00 },
-  { id: "gpt-5.2", name: "GPT-5.2", provider: "OpenAI", category: "Versatile", inputPer1M: 1.75, cachedPer1M: 0.175, cacheWritePer1M: null, outputPer1M: 14.00 },
-  { id: "gpt-5.2-codex", name: "GPT-5.2-Codex", provider: "OpenAI", category: "Powerful", inputPer1M: 1.75, cachedPer1M: 0.175, cacheWritePer1M: null, outputPer1M: 14.00 },
   { id: "gpt-5.3-codex", name: "GPT-5.3-Codex", provider: "OpenAI", category: "Powerful", inputPer1M: 1.75, cachedPer1M: 0.175, cacheWritePer1M: null, outputPer1M: 14.00 },
   { id: "gpt-5.4", name: "GPT-5.4", provider: "OpenAI", category: "Versatile", inputPer1M: 2.50, cachedPer1M: 0.25, cacheWritePer1M: null, outputPer1M: 15.00 },
+  { id: "gpt-5.4", name: "GPT-5.4", provider: "OpenAI", category: "Versatile", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: null, outputPer1M: 22.50 },
   { id: "gpt-5.4-mini", name: "GPT-5.4 mini", provider: "OpenAI", category: "Lightweight", inputPer1M: 0.75, cachedPer1M: 0.075, cacheWritePer1M: null, outputPer1M: 4.50 },
   { id: "gpt-5.4-nano", name: "GPT-5.4 nano", provider: "OpenAI", category: "Lightweight", inputPer1M: 0.20, cachedPer1M: 0.02, cacheWritePer1M: null, outputPer1M: 1.25 },
   { id: "gpt-5.5", name: "GPT-5.5", provider: "OpenAI", category: "Powerful", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: null, outputPer1M: 30.00 },
+  { id: "gpt-5.5", name: "GPT-5.5", provider: "OpenAI", category: "Powerful", inputPer1M: 10.00, cachedPer1M: 1.00, cacheWritePer1M: null, outputPer1M: 45.00 },
+  { id: "gpt-5.6-luna", name: "GPT-5.6 Luna", provider: "OpenAI", category: "Lightweight", inputPer1M: 0.20, cachedPer1M: 0.02, cacheWritePer1M: null, outputPer1M: 1.20 },
+  { id: "gpt-5.6-luna", name: "GPT-5.6 Luna", provider: "OpenAI", category: "Lightweight", inputPer1M: 0.40, cachedPer1M: 0.04, cacheWritePer1M: null, outputPer1M: 1.80 },
+  { id: "gpt-5.6-sol", name: "GPT-5.6 Sol", provider: "OpenAI", category: "Powerful", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: null, outputPer1M: 30.00 },
+  { id: "gpt-5.6-sol", name: "GPT-5.6 Sol", provider: "OpenAI", category: "Powerful", inputPer1M: 10.00, cachedPer1M: 1.00, cacheWritePer1M: null, outputPer1M: 45.00 },
+  { id: "gpt-5.6-terra", name: "GPT-5.6 Terra", provider: "OpenAI", category: "Versatile", inputPer1M: 2.00, cachedPer1M: 0.20, cacheWritePer1M: null, outputPer1M: 12.00 },
+  { id: "gpt-5.6-terra", name: "GPT-5.6 Terra", provider: "OpenAI", category: "Versatile", inputPer1M: 4.00, cachedPer1M: 0.40, cacheWritePer1M: null, outputPer1M: 18.00 },
   { id: "claude-haiku-4.5", name: "Claude Haiku 4.5", provider: "Anthropic", category: "Versatile", inputPer1M: 1.00, cachedPer1M: 0.10, cacheWritePer1M: 1.25, outputPer1M: 5.00 },
   { id: "claude-sonnet-4", name: "Claude Sonnet 4", provider: "Anthropic", category: "Versatile", inputPer1M: 3.00, cachedPer1M: 0.30, cacheWritePer1M: 3.75, outputPer1M: 15.00 },
   { id: "claude-sonnet-4.5", name: "Claude Sonnet 4.5", provider: "Anthropic", category: "Versatile", inputPer1M: 3.00, cachedPer1M: 0.30, cacheWritePer1M: 3.75, outputPer1M: 15.00 },
@@ -44,9 +49,17 @@ export const MODEL_PRICING: ModelPricing[] = [
   { id: "claude-opus-4.5", name: "Claude Opus 4.5", provider: "Anthropic", category: "Powerful", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: 6.25, outputPer1M: 25.00 },
   { id: "claude-opus-4.6", name: "Claude Opus 4.6", provider: "Anthropic", category: "Powerful", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: 6.25, outputPer1M: 25.00 },
   { id: "claude-opus-4.7", name: "Claude Opus 4.7", provider: "Anthropic", category: "Powerful", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: 6.25, outputPer1M: 25.00 },
-  { id: "gemini-2.5-pro", name: "Gemini 2.5 Pro", provider: "Google", category: "Powerful", inputPer1M: 1.25, cachedPer1M: 0.125, cacheWritePer1M: null, outputPer1M: 10.00 },
-  { id: "gemini-3-flash", name: "Gemini 3 Flash", provider: "Google", category: "Lightweight", inputPer1M: 0.50, cachedPer1M: 0.05, cacheWritePer1M: null, outputPer1M: 3.00 },
+  { id: "claude-opus-4.8", name: "Claude Opus 4.8", provider: "Anthropic", category: "Powerful", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: 6.25, outputPer1M: 25.00 },
+  { id: "claude-opus-5", name: "Claude Opus 5", provider: "Anthropic", category: "Powerful", inputPer1M: 5.00, cachedPer1M: 0.50, cacheWritePer1M: 6.25, outputPer1M: 25.00 },
+  { id: "claude-sonnet-5", name: "Claude Sonnet 5", provider: "Anthropic", category: "Versatile", inputPer1M: 2.00, cachedPer1M: 0.20, cacheWritePer1M: 2.50, outputPer1M: 10.00 },
+  { id: "claude-opus-4.8-(fast-mode)-(preview)", name: "Claude Opus 4.8 (fast mode) (preview)", provider: "Anthropic", category: "Powerful", inputPer1M: 10.00, cachedPer1M: 1.00, cacheWritePer1M: 12.50, outputPer1M: 50.00 },
+  { id: "claude-fable-5", name: "Claude Fable 5", provider: "Anthropic", category: "Powerful", inputPer1M: 10.00, cachedPer1M: 1.00, cacheWritePer1M: 12.50, outputPer1M: 50.00 },
   { id: "gemini-3.1-pro", name: "Gemini 3.1 Pro", provider: "Google", category: "Powerful", inputPer1M: 2.00, cachedPer1M: 0.20, cacheWritePer1M: null, outputPer1M: 12.00 },
+  { id: "gemini-3.1-pro", name: "Gemini 3.1 Pro", provider: "Google", category: "Powerful", inputPer1M: 4.00, cachedPer1M: 0.40, cacheWritePer1M: null, outputPer1M: 18.00 },
+  { id: "gemini-3.5-flash", name: "Gemini 3.5 Flash", provider: "Google", category: "Lightweight", inputPer1M: 1.50, cachedPer1M: 0.15, cacheWritePer1M: null, outputPer1M: 9.00 },
+  { id: "gemini-3.6-flash", name: "Gemini 3.6 Flash", provider: "Google", category: "Versatile", inputPer1M: 1.50, cachedPer1M: 0.15, cacheWritePer1M: null, outputPer1M: 7.50 },
+  { id: "grok-4.5", name: "Grok 4.5", provider: "xAI", category: "Versatile", inputPer1M: 2.00, cachedPer1M: 0.50, cacheWritePer1M: null, outputPer1M: 6.00 },
+  { id: "grok-4.5", name: "Grok 4.5", provider: "xAI", category: "Versatile", inputPer1M: 4.00, cachedPer1M: 1.00, cacheWritePer1M: null, outputPer1M: 12.00 },
   // END GENERATED MODEL_PRICING
 ]
 
